@@ -36,7 +36,7 @@ git branch 566-piyo
 git branch feature/fuga-123
 git branch exact
 git branch exact-long
-# リモートにだけ存在するブランチ
+# リモートにだけ存在するブランチ（対象外であることを確認する）
 git branch remote-only-777
 git push -q origin remote-only-777 2>/dev/null
 git branch -q -D remote-only-777
@@ -66,8 +66,7 @@ check "複数キーワードは AND で絞り込む" "feature/hoge-566" "$(curre
 check "完全一致があれば最優先する" "exact" "$(current)"
 
 "$SCRIPT" 777 >/dev/null 2>&1
-check "リモートのみのブランチも追跡付きで作成される" "origin/remote-only-777" \
-  "$(git rev-parse --abbrev-ref remote-only-777@{upstream} 2>/dev/null)"
+check "リモートのみのブランチは対象外（0件エラー）" "1" "$?"
 
 "$SCRIPT" zzz >/dev/null 2>&1
 check "0件ならエラー終了する" "1" "$?"
